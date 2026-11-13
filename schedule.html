@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STAP | Bus Schedule</title>
+  <link rel="stylesheet" href="schedule.css">
+</head>
+<body>
+
+<!-- Shared SVG definitions (same ornament as the kiosk screen) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#c9a24d"/>
+      <stop offset=".5" stop-color="#e6c883"/>
+      <stop offset="1" stop-color="#b8892f"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#e8cf94"/>
+      <stop offset="1" stop-color="#b8892f"/>
+    </linearGradient>
+    <symbol id="ornament" viewBox="0 0 480 60">
+      <g fill="none" stroke="url(#gold)" stroke-linecap="round">
+        <path stroke-width="2.4" d="M0 14 C70 14 120 16 165 27 C200 36 222 40 240 40 C258 40 280 36 315 27 C360 16 410 14 480 14"/>
+        <path stroke-width="1.8" d="M130 18 C150 20 160 34 146 38 C134 41 126 30 136 26"/>
+        <path stroke-width="1.8" d="M350 18 C330 20 320 34 334 38 C346 41 354 30 344 26"/>
+      </g>
+      <path fill="url(#gold)" d="M240 40 L247 47 L240 54 L233 47 Z"/>
+      <circle fill="url(#gold)" cx="222" cy="44" r="2.2"/>
+      <circle fill="url(#gold)" cx="258" cy="44" r="2.2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="page">
+
+  <!-- Ornamental top border -->
+  <div class="border" aria-hidden="true">
+    <span class="dot l"></span><span class="dot r"></span>
+    <span class="line l"></span>
+    <svg class="orn"><use href="#ornament"/></svg>
+    <span class="line r"></span>
+  </div>
+
+  <header class="head">
+    <div class="brand">
+      <svg class="shield" viewBox="0 0 80 96" aria-hidden="true">
+        <path d="M40 4 L74 15 V50 C74 72 58 86 40 93 C22 86 6 72 6 50 V15 Z" fill="url(#shield)" stroke="#a37a2a" stroke-width="2"/>
+        <path d="M40 11 L67 20 V50 C67 67 54 79 40 85 C26 79 13 67 13 50 V20 Z" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+        <text x="40" y="62" text-anchor="middle" font-size="44" font-weight="800" fill="#1d2a4a" font-family="Segoe UI, Arial, sans-serif">S</text>
+      </svg>
+      <div>
+        <div class="brand-name">STAP</div>
+        <div class="brand-sub">Smart Transit Access Point</div>
+      </div>
+    </div>
+    <div class="stop-label">Bus stop</div>
+    <h1 id="stopName">Dehgam Bus Stop</h1>
+    <p class="sub">Today's bus schedule. Tap a bus for details.</p>
+  </header>
+
+  <div class="listbar">
+    <h2>All buses</h2>
+    <span class="now" id="now">--:-- --</span>
+  </div>
+
+  <ul class="list" id="list"></ul>
+
+  <footer class="foot">
+    <span id="demoTag" hidden>Demonstration data</span>
+    <span>Updated <b id="updated">--:--:-- --</b></span>
+  </footer>
+
+  <div class="border bottom" aria-hidden="true">
+    <span class="line l"></span>
+    <svg class="orn"><use href="#ornament"/></svg>
+    <span class="line r"></span>
+  </div>
+</div>
+
+<!-- Bus detail card -->
+<div class="overlay" id="overlay" hidden>
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="dBus">
+    <button class="close" id="closeBtn" aria-label="Close details">&times;</button>
+
+    <svg class="sheet-orn" aria-hidden="true"><use href="#ornament"/></svg>
+
+    <div class="d-top">
+      <span class="badge big" id="dBus">--</span>
+      <span class="status" id="dStatus">--</span>
+    </div>
+
+    <div class="journey">
+      <div class="stop-col">
+        <small>From</small>
+        <b id="dFrom">--</b>
+      </div>
+      <div class="path" aria-hidden="true">
+        <i></i><span></span><svg viewBox="0 0 24 24"><path d="M3 12h16m-6-6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="stop-col right">
+        <small>To</small>
+        <b id="dTo">--</b>
+      </div>
+    </div>
+
+    <div class="times">
+      <div>
+        <small>Scheduled arrival</small>
+        <b id="dSched">--</b>
+      </div>
+      <div>
+        <small>Expected arrival</small>
+        <b id="dExp">--</b>
+        <em id="dDelay"></em>
+      </div>
+    </div>
+
+    <div class="facts">
+      <div><small>Seats available</small><b id="dSeats">--</b></div>
+      <div><small>Arrives at</small><b id="dAt">--</b></div>
+    </div>
+
+    <button class="book" id="bookBtn">Book Ticket</button>
+    <p class="book-note" id="bookNote" aria-live="polite"></p>
+  </section>
+</div>
+
+<script src="schedule.js"></script>
+</body>
+</html>

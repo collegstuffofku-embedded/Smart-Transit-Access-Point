@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STAP | Smart Transit Access Point</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Shared SVG definitions: gold gradient + the centre ornament used by both borders -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#c9a24d"/>
+      <stop offset=".5" stop-color="#e6c883"/>
+      <stop offset="1" stop-color="#b8892f"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#e8cf94"/>
+      <stop offset="1" stop-color="#b8892f"/>
+    </linearGradient>
+    <symbol id="ornament" viewBox="0 0 480 60">
+      <g fill="none" stroke="url(#gold)" stroke-linecap="round">
+        <path stroke-width="2.4" d="M0 14 C70 14 120 16 165 27 C200 36 222 40 240 40 C258 40 280 36 315 27 C360 16 410 14 480 14"/>
+        <path stroke-width="1.8" d="M130 18 C150 20 160 34 146 38 C134 41 126 30 136 26"/>
+        <path stroke-width="1.8" d="M350 18 C330 20 320 34 334 38 C346 41 354 30 344 26"/>
+      </g>
+      <path fill="url(#gold)" d="M240 40 L247 47 L240 54 L233 47 Z"/>
+      <circle fill="url(#gold)" cx="222" cy="44" r="2.2"/>
+      <circle fill="url(#gold)" cx="258" cy="44" r="2.2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="stage">
+
+  <!-- Ornamental borders (animate from screen centre outwards) -->
+  <div class="border top" aria-hidden="true">
+    <div class="inner">
+      <span class="dot l"></span><span class="dot r"></span>
+      <span class="line l"></span>
+      <svg class="orn"><use href="#ornament"/></svg>
+      <span class="line r"></span>
+    </div>
+  </div>
+  <div class="border bottom" aria-hidden="true">
+    <div class="inner">
+      <span class="dot l"></span><span class="dot r"></span>
+      <span class="line l"></span>
+      <svg class="orn"><use href="#ornament"/></svg>
+      <span class="line r"></span>
+    </div>
+  </div>
+
+  <main class="dashboard" id="dashboard">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <svg class="shield" viewBox="0 0 80 96" aria-hidden="true">
+          <path d="M40 4 L74 15 V50 C74 72 58 86 40 93 C22 86 6 72 6 50 V15 Z" fill="url(#shield)" stroke="#a37a2a" stroke-width="2"/>
+          <path d="M40 11 L67 20 V50 C67 67 54 79 40 85 C26 79 13 67 13 50 V20 Z" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+          <text x="40" y="62" text-anchor="middle" font-size="44" font-weight="800" fill="#1d2a4a" font-family="Segoe UI, Arial, sans-serif">S</text>
+        </svg>
+        <div>
+          <div class="brand-name">STAP</div>
+          <div class="brand-sub">Smart Transit Access Point</div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="stop-label">Current bus stop</div>
+        <div class="stop-name" id="stopName">Dehgam Bus Stop</div>
+      </div>
+
+      <div class="clockbox">
+        <div class="pill online" id="sysPill"><i></i><span id="sysText">System online</span></div>
+        <div class="clock" id="clock">--:-- --</div>
+      </div>
+    </header>
+
+    <!-- Main grid -->
+    <section class="main">
+
+      <!-- Upcoming buses -->
+      <article class="card buses">
+        <div class="card-top">
+          <div>
+            <span class="tag">Public transport</span>
+            <h2>Upcoming Buses</h2>
+          </div>
+          <div class="pill online live"><i></i><span>Live updates</span></div>
+        </div>
+
+        <div class="thead row-grid">
+          <span>Bus No.</span><span>Destination</span><span class="c">Arrival</span><span class="c">Status</span>
+        </div>
+        <div class="rows" id="rows"></div>
+      </article>
+
+      <!-- Right column: seats (top), QR (below) -->
+      <aside class="side">
+        <article class="card seats">
+          <div class="small-label">Seat availability</div>
+
+          <svg class="bus" viewBox="0 0 250 92" aria-hidden="true">
+            <rect x="6" y="8" width="238" height="60" rx="13" fill="#fff" stroke="#1d2a4a" stroke-width="2.2"/>
+            <g id="busSeats">
+              <rect class="seat" x="18"  y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="38"  y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="58"  y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="78"  y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="98"  y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="118" y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="150" y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="170" y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="190" y="17" width="17" height="22" rx="3"/>
+              <rect class="seat" x="210" y="17" width="17" height="22" rx="3"/>
+            </g>
+            <line x1="141" y1="14" x2="141" y2="62" stroke="#1d2a4a" stroke-width="1.6"/>
+            <line x1="12" y1="50" x2="238" y2="50" stroke="#1d2a4a" stroke-opacity=".25" stroke-width="1.4"/>
+            <circle cx="56"  cy="70" r="10" fill="#1d2a4a"/><circle cx="56"  cy="70" r="4" fill="#fff"/>
+            <circle cx="196" cy="70" r="10" fill="#1d2a4a"/><circle cx="196" cy="70" r="4" fill="#fff"/>
+          </svg>
+
+          <div class="seat-count"><b id="seatFree">--</b> / <span id="seatTotal">--</span> seats available</div>
+          <div class="next-bus">Next bus: <b id="nextBus">--</b></div>
+        </article>
+
+        <article class="card qr">
+          <div class="small-label">Digital access</div>
+          <div class="qr-title">Your Journey</div>
+          <div id="qr" class="qr-box"></div>
+          <div class="qr-note">Scan for the full schedule and to book a ticket.</div>
+        </article>
+      </aside>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="foot-left">
+        <span><i class="dot-op"></i>STAP operational</span>
+        <span class="demo" id="demoTag">Demonstration data</span>
+      </div>
+      <div class="foot-right">Last updated: <span id="updated">--:--:-- --</span></div>
+    </footer>
+  </main>
+</div>
+
+<!-- QR library (CDN). For an offline kiosk, download qrcode.min.js next to this file and change the path. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
